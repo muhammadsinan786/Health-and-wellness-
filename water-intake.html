@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Intake Calculator | Your Business Name</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --water-blue: #00b4d8;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .calculator-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .calculator-title {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .calculator-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-option input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .result-container {
+            text-align: center;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .water-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--water-blue);
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .water-icon {
+            font-size: 2.5rem;
+        }
+
+        .water-cups {
+            display: inline-block;
+            background-color: var(--water-blue);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .recommendations {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .recommendation {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .recommendation-icon {
+            color: var(--water-blue);
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+
+        .info-section {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .info-text {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .hydration-tips {
+            margin-top: 30px;
+        }
+
+        .tip {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tip-number {
+            background-color: var(--water-blue);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .calculator-card {
+                padding: 25px;
+            }
+
+            .calculator-title {
+                font-size: 1.6rem;
+            }
+
+            .water-amount {
+                font-size: 2.5rem;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-card">
+            <div class="calculator-header">
+                <h1 class="calculator-title">Water Intake Calculator</h1>
+                <p class="calculator-description">
+                    Calculate your recommended daily water intake based on your weight and activity level.
+                </p>
+            </div>
+
+            <div class="input-group">
+                <label for="weight" class="input-label">Your Weight</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="weight" class="input-field" placeholder="Enter your weight">
+                    <select id="weight-unit" class="input-field" style="flex: 0 0 100px;">
+                        <option value="kg">kg</option>
+                        <option value="lbs">lbs</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Activity Level</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="activity" value="sedentary" checked>
+                        Sedentary (little or no exercise)
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="activity" value="moderate">
+                        Moderate (exercise 3-5 days/week)
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="activity" value="active">
+                        Active (intense exercise 6-7 days/week)
+                    </label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="climate" class="input-label">Climate</label>
+                <select id="climate" class="input-field">
+                    <option value="temperate">Temperate (normal)</option>
+                    <option value="hot">Hot/humid climate</option>
+                    <option value="cold">Cold/dry climate</option>
+                </select>
+            </div>
+
+            <button id="calculate-btn" class="btn">Calculate Water Intake</button>
+
+            <div id="result-container" class="result-container">
+                <h2 class="result-title">Your Daily Water Intake</h2>
+                <div class="water-amount">
+                    <i class="fas fa-tint water-icon"></i>
+                    <span id="water-amount">3.2</span> liters
+                </div>
+                <div class="water-cups">
+                    ≈ <span id="cup-amount">13</span> cups (250ml each)
+                </div>
+
+                <div class="recommendations">
+                    <h3 style="margin: 25px 0 15px; color: var(--secondary-color);">Hydration Recommendations:</h3>
+                    
+                    <div class="recommendation">
+                        <i class="fas fa-check-circle recommendation-icon"></i>
+                        <div>
+                            <strong>Morning:</strong> Drink <span id="morning-amount">1</span> glasses upon waking to rehydrate after sleep
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation">
+                        <i class="fas fa-check-circle recommendation-icon"></i>
+                        <div>
+                            <strong>Before Meals:</strong> Have 1 glass 30 minutes before each meal to aid digestion
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation">
+                        <i class="fas fa-check-circle recommendation-icon"></i>
+                        <div>
+                            <strong>During Exercise:</strong> Drink <span id="exercise-amount">500</span>ml for every 30 minutes of activity
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation">
+                        <i class="fas fa-check-circle recommendation-icon"></i>
+                        <div>
+                            <strong>Evening:</strong> Finish your last glass 1-2 hours before bedtime
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2 class="info-title">About Water Intake</h2>
+            <p class="info-text">
+                The human body is composed of about 60% water, and maintaining proper hydration is essential for numerous bodily functions including temperature regulation, joint lubrication, and nutrient transportation.
+            </p>
+            
+            <h3 class="info-title hydration-tips">Hydration Tips</h3>
+            
+            <div class="tip">
+                <div class="tip-number">1</div>
+                <div>
+                    <strong>Carry a water bottle</strong> - Having water readily available makes it easier to stay hydrated throughout the day.
+                </div>
+            </div>
+            
+            <div class="tip">
+                <div class="tip-number">2</div>
+                <div>
+                    <strong>Monitor urine color</strong> - Pale yellow indicates proper hydration, while dark yellow suggests you need more water.
+                </div>
+            </div>
+            
+            <div class="tip">
+                <div class="tip-number">3</div>
+                <div>
+                    <strong>Eat water-rich foods</strong> - Fruits and vegetables like cucumbers, watermelon, and oranges contribute to hydration.
+                </div>
+            </div>
+            
+            <div class="tip">
+                <div class="tip-number">4</div>
+                <div>
+                    <strong>Set reminders</strong> - Use apps or alarms to remind yourself to drink water regularly.
+                </div>
+            </div>
+            
+            <p class="info-text" style="margin-top: 25px;">
+                <strong>Note:</strong> Individual water needs can vary based on factors like health conditions, pregnancy, or breastfeeding. Consult with a healthcare provider for personalized recommendations.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resultContainer = document.getElementById('result-container');
+            const waterAmount = document.getElementById('water-amount');
+            const cupAmount = document.getElementById('cup-amount');
+            const morningAmount = document.getElementById('morning-amount');
+            const exerciseAmount = document.getElementById('exercise-amount');
+
+            calculateBtn.addEventListener('click', function() {
+                // Get input values
+                const weight = parseFloat(document.getElementById('weight').value);
+                const weightUnit = document.getElementById('weight-unit').value;
+                const activityLevel = document.querySelector('input[name="activity"]:checked').value;
+                const climate = document.getElementById('climate').value;
+                
+                // Validate input
+                if (isNaN(weight) || weight <= 0) {
+                    alert('Please enter a valid weight');
+                    return;
+                }
+                
+                // Convert weight to kg if in lbs
+                const weightKg = weightUnit === 'lbs' ? weight * 0.453592 : weight;
+                
+                // Base water calculation (30-35ml per kg of body weight)
+                let waterIntake = weightKg * 0.033; // Average of 33ml/kg
+                
+                // Adjust for activity level
+                if (activityLevel === 'moderate') {
+                    waterIntake *= 1.2;
+                } else if (activityLevel === 'active') {
+                    waterIntake *= 1.5;
+                }
+                
+                // Adjust for climate
+                if (climate === 'hot') {
+                    waterIntake *= 1.2;
+                } else if (climate === 'cold') {
+                    waterIntake *= 0.9;
+                }
+                
+                // Round to 1 decimal place
+                waterIntake = Math.round(waterIntake * 10) / 10;
+                
+                // Display results
+                waterAmount.textContent = waterIntake;
+                cupAmount.textContent = Math.round(waterIntake * 4); // 1 liter ≈ 4 cups
+                morningAmount.textContent = Math.max(1, Math.round(waterIntake * 0.15));
+                exerciseAmount.textContent = activityLevel === 'active' ? 750 : activityLevel === 'moderate' ? 500 : 250;
+                
+                // Show results
+                resultContainer.style.display = 'block';
+                
+                // Scroll to results
+                resultContainer.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

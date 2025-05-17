@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Protein Intake Calculator | Your Business Name</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4a6fa5;
+      --secondary-color: #166088;
+      --accent-color: #4fc3f7;
+      --protein-color: #7cb518;
+      --text-color: #333;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --border-radius: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .calculator-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      box-shadow: var(--shadow);
+      margin-bottom: 40px;
+    }
+
+    .calculator-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .calculator-title {
+      font-size: 2rem;
+      color: var(--secondary-color);
+      margin-bottom: 10px;
+    }
+
+    .calculator-description {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 25px;
+    }
+
+    .input-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--secondary-color);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .input-field:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .radio-option input {
+      width: 18px;
+      height: 18px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .result-container {
+      text-align: center;
+      padding: 30px;
+      background: #f9f9f9;
+      border-radius: var(--border-radius);
+      margin-top: 30px;
+      display: none;
+    }
+
+    .result-title {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--secondary-color);
+    }
+
+    .protein-amount {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--protein-color);
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .protein-icon {
+      font-size: 2.5rem;
+    }
+
+    .water-cups {
+      display: inline-block;
+      background-color: var(--protein-color);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    .info-section {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-title {
+      font-size: 1.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 20px;
+    }
+
+    .info-text {
+      margin-bottom: 15px;
+      line-height: 1.7;
+    }
+
+    .hydration-tips {
+      margin-top: 30px;
+    }
+
+    .tip {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .tip-number {
+      background-color: var(--protein-color);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: bold;
+    }
+
+    .note {
+      margin-top: 25px;
+      font-style: italic;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 15px;
+      }
+
+      .calculator-card {
+        padding: 25px;
+      }
+
+      .calculator-title {
+        font-size: 1.6rem;
+      }
+
+      .protein-amount {
+        font-size: 2.5rem;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .radio-group {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="calculator-card">
+      <div class="calculator-header">
+        <h1 class="calculator-title">Protein Intake Calculator</h1>
+        <p class="calculator-description">
+          Calculate your ideal daily protein intake based on your weight, gender, activity level, and fitness goals.
+        </p>
+      </div>
+
+      <div class="input-group">
+        <label for="gender" class="input-label">Gender</label>
+        <select id="gender" class="input-field">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="weight" class="input-label">Your Weight</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="number" id="weight" class="input-field" placeholder="Enter your weight">
+          <select id="weight-unit" class="input-field" style="flex: 0 0 100px;">
+            <option value="kg">kg</option>
+            <option value="lbs">lbs</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Activity Level</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="activity" value="sedentary" checked>
+            Sedentary
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="activity" value="moderate">
+            Moderate
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="activity" value="active">
+            Active
+          </label>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Goal</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="goal" value="maintenance" checked>
+            Maintenance
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="goal" value="fat-loss">
+            Fat Loss
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="goal" value="muscle-gain">
+            Muscle Gain
+          </label>
+        </div>
+      </div>
+
+      <button id="calculate-btn" class="btn">Calculate Protein Intake</button>
+
+      <div id="result-container" class="result-container">
+        <h2 class="result-title">Your Daily Protein Intake</h2>
+        <div class="protein-amount">
+          <i class="fas fa-drumstick-bite protein-icon"></i>
+          <span id="protein-amount">120</span> grams
+        </div>
+        <div class="water-cups">
+          ≈ <span id="protein-per-meal">30</span>g per meal (4 meals/day)
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2 class="info-title">Why Protein Matters</h2>
+      <p class="info-text">
+        Protein is essential for building and repairing tissues, producing enzymes and hormones, and supporting overall muscle health. It's especially important for active individuals and those pursuing fitness goals.
+      </p>
+
+      <h3 class="info-title hydration-tips">Protein Tips</h3>
+      <div class="tip">
+        <div class="tip-number">1</div>
+        <div><strong>Distribute intake evenly</strong> - Aim to consume protein throughout the day to maximize absorption.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-number">2</div>
+        <div><strong>Include complete sources</strong> - Choose high-quality proteins like eggs, poultry, fish, and legumes.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-number">3</div>
+        <div><strong>Track your intake</strong> - Use apps or logs to ensure you're meeting your daily protein needs.</div>
+      </div>
+      
+      <!-- Added protein note similar to water calculator -->
+      <p class="note">
+        <strong>Note:</strong> Individual protein needs can vary based on factors like health conditions, age, or specific dietary requirements. Consult with a healthcare provider or nutritionist for personalized recommendations.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calculateBtn = document.getElementById('calculate-btn');
+      const resultContainer = document.getElementById('result-container');
+      const proteinAmount = document.getElementById('protein-amount');
+      const proteinPerMeal = document.getElementById('protein-per-meal');
+
+      calculateBtn.addEventListener('click', function () {
+        const weight = parseFloat(document.getElementById('weight').value);
+        const weightUnit = document.getElementById('weight-unit').value;
+        const gender = document.getElementById('gender').value;
+        const activity = document.querySelector('input[name="activity"]:checked').value;
+        const goal = document.querySelector('input[name="goal"]:checked').value;
+
+        if (isNaN(weight) || weight <= 0) {
+          alert('Please enter a valid weight');
+          return;
+        }
+
+        const weightKg = weightUnit === 'lbs' ? weight * 0.453592 : weight;
+
+        // Base multiplier
+        let multiplier = 1.2;
+
+        if (goal === 'fat-loss') {
+          multiplier = 1.6;
+        } else if (goal === 'muscle-gain') {
+          multiplier = 2.0;
+        }
+
+        if (activity === 'moderate') {
+          multiplier += 0.2;
+        } else if (activity === 'active') {
+          multiplier += 0.4;
+        }
+
+        const dailyProtein = Math.round(weightKg * multiplier);
+
+        proteinAmount.textContent = dailyProtein;
+        proteinPerMeal.textContent = Math.round(dailyProtein / 4);
+
+        resultContainer.style.display = 'block';
+        resultContainer.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
